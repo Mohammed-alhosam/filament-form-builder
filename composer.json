@@ -1,0 +1,40 @@
+{
+    "name": "alhosam/filament-form-builder",
+    "description": "Reusable form builder package for Laravel 12 and Filament v4 projects.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "filament/filament": "^4.1",
+        "laravel/framework": "^12.0",
+        "spatie/laravel-package-tools": "^1.93"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.5",
+        "laravel/pint": "^1.24"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alhosam\\FilamentFormBuilder\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alhosam\\FilamentFormBuilder\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "format": "vendor/bin/pint"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Alhosam\\FilamentFormBuilder\\FilamentFormBuilderServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
