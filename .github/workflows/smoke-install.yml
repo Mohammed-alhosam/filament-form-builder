@@ -1,0 +1,75 @@
+name: smoke-install
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  clean-laravel-install:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: none
+          tools: composer:v2
+
+      - name: Create clean Laravel application
+        run: composer create-project laravel/laravel smoke-app "^12.0" --prefer-dist --no-interaction
+
+      - name: Require Filament Form Builder from local path
+        working-directory: smoke-app
+        run: |
+          composer config repositories.local path ..
+          composer require alhosam/filament-form-builder --prefer-dist --no-interaction
+
+      - name: Install Filament panels
+        working-directory: smoke-app
+        run: php artisan filament:install --panels --no-interaction
+
+      - name: Register plugin in panel provider
+        working-directory: smoke-app
+        run: |
+          python <<'PY'
+          from pathlib import Path
+
+          path = Path("app/Providers/Filament/AdminPanelProvider.php")
+          contents = path.read_text(encoding="utf-8")
+
+          use_stmt = "use Alhosam\\\\FilamentFormBuilder\\\\Filament\\\\Plugins\\\\FilamentFormBuilderPlugin;\n"
+          if use_stmt not in contents:
+              contents = contents.replace(
+                  "namespace App\\\\Providers\\\\Filament;\n\n",
+                  "namespace App\\\\Providers\\\\Filament;\n\n" + use_stmt,
+              )
+
+          plugin_call = "            ->plugin(FilamentFormBuilderPlugin::make())\n"
+          if plugin_call not in contents:
+              contents = contents.replace(
+                  "            ->path('admin');\n",
+                  "            ->plugin(FilamentFormBuilderPlugin::make())\n            ->path('admin');\n",
+              )
+
+          path.write_text(contents, encoding="utf-8")
+          PY
+
+      - name: Publish package config and migrations
+        working-directory: smoke-app
+        run: |
+          php artisan vendor:publish --tag=filament-form-builder-config --force
+          php artisan vendor:publish --tag=filament-form-builder-migrations --force
+          php artisan filament:assets
+
+      - name: Run migrations
+        working-directory: smoke-app
+        run: php artisan migrate --force
+
+      - name: Validate installation
+        working-directory: smoke-app
+        run: php artisan form-builder:doctor

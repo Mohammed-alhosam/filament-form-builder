@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.1.1
+
+- add smoke-install GitHub Actions workflow for clean Laravel validation
+- add issue templates and pull request template
+- add Packagist release checklist documentation
+- expand README with security and release workflow notes
+
 ## v0.1.0
 
 - initial reusable package bootstrap

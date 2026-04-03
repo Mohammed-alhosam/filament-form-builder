@@ -13,6 +13,7 @@ Reusable form builder package for Laravel 12 and Filament v4.
 - honeypot and rate limiting hooks for public forms
 - field type registry for future extensibility
 - doctor command and official Filament asset registration
+- clean host bindings for contexts such as event registration or landing pages
 
 ## Installation
 
@@ -62,6 +63,17 @@ Render a form by model instance:
 <x-filament-form-builder::form :form="$form" />
 ```
 
+## Security and availability
+
+Public forms support:
+
+- honeypot spam protection
+- configurable rate limiting
+- guest or authenticated-only submissions
+- availability windows through `available_from` and `available_until`
+
+These controls are managed through the package configuration and form settings.
+
 ## Host bindings
 
 The package stays generic. The host app can register binding types:
@@ -76,6 +88,14 @@ app(FormBuilderRegistry::class)->registerBinding('events.registration', [
 ```
 
 This keeps project-specific models and workflows outside the package.
+
+## Release workflow
+
+This repository includes:
+
+- `tests` GitHub Actions workflow
+- `smoke-install` workflow for clean Laravel installation checks
+- Packagist release checklist in `docs/packagist-release-checklist.md`
 
 ## Field types
 

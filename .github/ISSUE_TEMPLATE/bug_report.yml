@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a reproducible problem in Filament Form Builder.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please provide enough detail for us to reproduce it safely.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+      placeholder: A short description of the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List the smallest repeatable steps.
+      placeholder: |
+        1. Install the package
+        2. Open the form workspace
+        3. Submit a form with ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      placeholder: Describe what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include package version, Laravel version, Filament version, PHP version, and database driver.
+      placeholder: |
+        Package: v0.1.0
+        Laravel: 12.x
+        Filament: 4.x
+        PHP: 8.3
+        Database: MySQL 8
+    validations:
+      required: true
